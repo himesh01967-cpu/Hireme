@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hireme - GEOINT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Patrick+Hand&family=Shantell+Sans:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg-main: #3d4552;
+      --card-bg: #2d3340;
+      --card-header: #242933;
+      --text-main: #ffffff;
+      --text-muted: #9aa3b0;
+      --accent-blue: #1c88e3;
+      --accent-blue-hover: #1474c7;
+      --border-color: rgba(255, 255, 255, 0.08);
+      /* Exact Choco Cooky / Cool Jazz playful handwriting aesthetic */
+      --font-choco: 'Shantell Sans', 'Patrick Hand', 'Gochi Hand', cursive, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-choco);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      letter-spacing: 0.2px;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      background-color: rgba(36, 41, 51, 0.95);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .pill-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #474f60;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 5px 12px 5px 6px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: var(--font-choco);
+      transition: background 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .pill-btn:hover {
+      background: #545d70;
+    }
+
+    .pill-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #b197fc;
+      color: #2b1f47;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: lowercase;
+    }
+
+    .pill-arrow {
+      font-size: 11px;
+      color: #cbd3e1;
+      margin-left: 2px;
+    }
+
+    .icon-action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #474f60;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .icon-action-btn:hover {
+      background: #545d70;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      position: relative;
+      max-width: 520px;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 36px;
+      background: #474f60;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 0 34px 0 34px;
+      color: #ffffff;
+      outline: none;
+      font-family: var(--font-choco);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .search-input::placeholder {
+      color: #94a3b8;
+      font-family: var(--font-choco);
+      font-size: 16px;
+      font-style: italic;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-blue);
+      background: #4d5669;
+    }
+
+    .search-icon-svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #cbd5e1;
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+    }
+
+    /* Three Dots Dropdown Menu */
+    .menu-dropdown {
+      position: absolute;
+      top: 54px;
+      left: 80px;
+      background: #232731;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+      width: 230px;
+      z-index: 60;
+      padding: 6px 0;
+      display: none;
+      font-family: var(--font-choco);
+    }
+
+    .menu-dropdown.show {
+      display: block;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      color: #e2e8f0;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .menu-item:hover {
+      background: #2e3442;
+      color: #fff;
+    }
+
+    .menu-item svg {
+      width: 17px;
+      height: 17px;
+      opacity: 0.85;
+      flex-shrink: 0;
+    }
+
+    .menu-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 4px 0;
+    }
+
+    /* Main Grid View */
+    .main-container {
+      flex: 1;
+      padding: 16px;
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    /* Category Card */
+    .cat-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s ease;
+    }
+
+    .cat-header {
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .cat-title-text {
+      font-family: var(--font-choco);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #ffffff;
+      text-transform: uppercase;
+      font-style: italic;
+    }
+
+    .cat-header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #94a3b8;
+    }
+
+    .cat-count {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-family: var(--font-choco);
+    }
+
+    .cat-toggle-chevron {
+      font-size: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .cat-toggle-chevron.collapsed {
+      transform: rotate(-90deg);
+    }
+
+    .links-list {
+      padding: 8px 10px 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-height: 2600px;
+      transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease;
+      overflow: hidden;
+    }
+
+    .links-list.collapsed {
+      max-height: 0 !important;
+      padding-top: 0;
+      padding-bottom: 0;
+      opacity: 0;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 8px;
+      border-radius: 7px;
+      text-decoration: none;
+      color: #f1f5f9;
+      transition: background 0.12s ease;
+    }
+
+    .link-row:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .link-favicon {
+      width: 17px;
+      height: 17px;
+      border-radius: 4px;
+      object-fit: contain;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .link-name {
+      font-family: var(--font-choco);
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      letter-spacing: 0.2px;
+    }
+    
+    /* World Clock Widget */
+    .clock-widget-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .clock-format-toggle {
+      align-self: flex-end;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: var(--font-choco);
+      margin-bottom: 4px;
+    }
+
+    .clock-format-toggle:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+    }
+
+    .clock-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .clock-location {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .clock-city {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-choco);
+    }
+
+    .clock-flag {
+      font-size: 16px;
+    }
+
+    .clock-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      font-family: var(--font-choco);
+    }
+
+    .clock-time-side {
+      text-align: right;
+    }
+
+    .clock-live-time {
+      font-family: var(--font-choco);
+      font-size: 16px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.5px;
+    }
+
+    .clock-live-date {
+      font-size: 10px;
+      color: #94a3b8;
+      font-family: var(--font-choco);
+    }
+
+    /* News / Reddit Feed Widget */
+    .news-widget-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .news-top-item {
+      display: flex;
+      gap: 10px;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s ease;
+    }
+
+    .news-top-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .news-thumbnail {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      background: #ff4500;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: var(--font-choco);
+    }
+
+    .news-top-details {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .news-top-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.3;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: var(--font-choco);
+    }
+
+    .news-top-meta {
+      font-size: 11px;
+      color: #38bdf8;
+      margin-bottom: 4px;
+      font-family: var(--font-choco);
+    }
+
+    .news-top-desc {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-family: var(--font-choco);
+    }
+
+    .news-compact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .news-compact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.02);
+      text-decoration: none;
+      color: inherit;
+      font-size: 12px;
+      font-family: var(--font-choco);
+      transition: background 0.12s;
+    }
+
+    .news-compact-row:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .news-compact-title {
+      color: #e2e8f0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .news-compact-date {
+      color: #64748b;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .news-pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .news-page-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.15s ease;
+      font-family: var(--font-choco);
+    }
+
+    .news-page-btn:hover:not(:disabled) {
+      background: #1c88e3;
+    }
+
+    .news-page-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .news-page-counter {
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 700;
+      font-family: var(--font-choco);
+    }
+
+    /* Compact mode styles */
+    body.compact-mode .cat-card {
+      box-shadow: none;
+    }
+    body.compact-mode .cat-header {
+      padding: 8px 10px;
+    }
+    body.compact-mode .cat-title-text {
+      font-size: 15px;
+    }
+    body.compact-mode .link-row {
+      padding: 4px 6px;
+      gap: 8px;
+    }
+    body.compact-mode .link-name {
+      font-size: 13px;
+    }
+
+    .empty-search-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: #94a3b8;
+      font-family: var(--font-choco);
+    }
+
+    /* Profile / Startpage Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      font-family: var(--font-choco);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      }
+    
+    .profile-card-modal {
+      background: #ffffff;
+      color: #1e293b;
+      width: 100%;
+      max-width: 360px;
+      border-radius: 20px;
+      padding: 24px 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      animation: modalPop 0.18s ease-out;
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.94); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .brand-header-hireme {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .brand-logo-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #1976d2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .brand-logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: -0.5px;
+      font-family: var(--font-choco);
+    }
+
+    .user-profile-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .user-circle-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 22px;
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-handle {
+      font-family: var(--font-choco);
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .view-profile-link {
+      font-family: var(--font-choco);
+      font-size: 14px;
+      color: #0284c7;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .geoint-pill {
+      background: #edf5ff;
+      border: 1px solid #d0e4ff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+      font-family: var(--font-choco);
+    }
+
+    .btn-create-page {
+      width: 100%;
+      background: #1c88e3;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: var(--font-choco);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: background 0.15s ease;
+    }
+
+    .btn-create-page:hover {
+      background: #1573c4;
+    }
+
+    .btn-explore-pages {
+      width: 100%;
+      background: #f1f5f9;
+      color: #1e293b;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-family: var(--font-choco);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-explore-pages:hover {
+      background: #e2e8f0;
+    }
+
+    .modal-close-cross {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+
+    /* Fullscreen Auth Screen */
+    .auth-fullscreen {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      color: #0f172a;
+      z-index: 200;
+      overflow-y: auto;
+      display: none;
+      padding: 24px 18px 40px 18px;
+      font-family: var(--font-choco);
+    }
+
+    .auth-fullscreen.active {
+      display: block;
+    }
+
+    .auth-container {
+      max-width: 390px;
+      margin: 0 auto;
+    }
+
+    .auth-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 34px;
+    }
+
+    .auth-signin-link {
+      font-family: var(--font-choco);
+      font-size: 17px;
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .auth-heading-title {
+      font-family: var(--font-choco);
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      color: #1e293b;
+    }
+
+    .auth-subheading {
+      font-family: var(--font-choco);
+      font-size: 15px;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    .input-label-small {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #475569;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      font-family: var(--font-choco);
+    }
+
+    .email-row-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .auth-email-input {
+      flex: 1;
+      height: 44px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-family: var(--font-choco);
+      font-size: 16px;
+      outline: none;
+    }
+
+    .auth-email-input:focus {
+      border-color: #0284c7;
+    }
+
+    .auth-signup-btn {
+      background: #1c88e3;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0 18px;
+      font-family: var(--font-choco);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Cloudflare Turnstile Box */
+    .cloudflare-box {
+      background: #2b2b2b;
+      border-radius: 6px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+      margin-bottom: 24px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      font-family: var(--font-choco);
+    }
+
+    .cf-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cf-spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: cfSpin 0.75s linear infinite;
+    }
+
+    @keyframes cfSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .cf-success-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #22c55e;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .cf-status-text {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .cf-status-text.success-text {
+      font-family: var(--font-choco);
+      font-size: 16px;
+      font-style: italic;
+    }
+
+    .cf-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .cf-cloud-logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .cf-cloud-svg {
+      color: #f97316;
+      width: 22px;
+      height: 14px;
+    }
+
+    .cf-links-sub {
+      font-size: 9px;
+      color: #94a3b8;
+    }
+
+    .or-divider-text {
+      font-family: var(--font-choco);
+      font-size: 18px;
+      color: #334155;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .sso-buttons-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sso-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      height: 44px;
+      padding: 0 16px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #1e293b;
+      font-family: var(--font-choco);
+      font-size: 15px;
+      font-weight: 700;
+      transition: background 0.12s ease;
+    }
+
+    .sso-btn:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .sso-btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .back-to-dashboard-btn {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #64748b;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: var(--font-choco);
+      font-weight: 600;
+    }
+
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      z-index: 300;
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      pointer-events: none;
+      font-family: var(--font-choco);
+      font-weight: 600;
+    }
+
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <button class="pill-btn" id="openProfileBtn" title="Board Profile">
+      <span class="pill-avatar">yu</span>
+      <span>yuno</span>
+      <span class="pill-arrow">⌵</span>
+    </button>
+
+    <button class="icon-action-btn" id="menuToggleBtn" title="Board Options">⋮</button>
+
+    <div class="search-wrapper">
+      <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off">
+      <button id="searchClearBtn" class="search-clear-btn" title="Clear">×</button>
+    </div>
+
+    <button class="icon-action-btn" id="userIconBtn" title="User Profile">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </button>
+  </header>
+  
+  <!-- Three Dots Dropdown Menu -->
+  <div class="menu-dropdown" id="dotsMenu">
+    <div class="menu-item" id="menuShareBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="18" cy="5" r="3"></circle>
+        <circle cx="6" cy="12" r="3"></circle>
+        <circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      <span>Share Board Link</span>
+    </div>
+    <div class="menu-item" id="menuCompactBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      <span id="compactLabel">Toggle Compact View</span>
+    </div>
+    <div class="menu-item" id="menuAboutBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <span>About Directory</span>
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-item" id="menuCollapseAllBtn">
+      <svg id="collapseMenuIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="4 14 12 6 20 14"></polyline>
+      </svg>
+      <span id="collapseMenuText">Collapse all widgets</span>
+    </div>
+  </div>
+
+  <!-- Main Grid Categories View -->
+  <main class="main-container">
+    <div class="categories-grid" id="categoriesGrid"></div>
+  </main>
+
+  <!-- Modal Overlay: Profile & Board Info -->
+  <div class="modal-overlay" id="profileModalOverlay">
+    <div class="profile-card-modal">
+      <button class="modal-close-cross" id="closeProfileModalBtn">×</button>
+
+      <div class="brand-header-hireme">
+        <div class="brand-logo-icon">H</div>
+        <div class="brand-logo-text">Hireme</div>
+      </div>
+
+      <div class="user-profile-row">
+        <div class="user-circle-avatar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="user-details">
+          <div class="user-handle">yuno</div>
+          <a class="view-profile-link" id="viewProfileInnerLink">View profile</a>
+        </div>
+      </div>
+
+      <div class="geoint-pill">GEOINT</div>
+
+      <button class="btn-create-page" id="openAuthPageBtn">Create your own startpage</button>
+      <button class="btn-explore-pages" id="explorePagesBtn">Explore Community Start Pages</button>
+    </div>
+  </div>
+
+  <!-- Fullscreen Auth Screen -->
+  <div class="auth-fullscreen" id="authFullscreen">
+    <div class="auth-container">
+      <div class="auth-top-bar">
+        <div class="brand-header-hireme" style="margin-bottom: 0;">
+          <div class="brand-logo-icon">H</div>
+          <div class="brand-logo-text">Hireme</div>
+        </div>
+        <a class="auth-signin-link" id="authSignInToggle">Sign in</a>
+      </div>
+
+      <h1 class="auth-heading-title" id="authMainTitle">Create an account</h1>
+      <p class="auth-subheading">It's free and will take you less than a minute</p>
+
+      <label class="input-label-small">EMAIL</label>
+      <div class="email-row-group">
+        <input type="email" class="auth-email-input" placeholder="Email" id="authEmailInput">
+        <button class="auth-signup-btn" id="authSubmitBtn">Sign up</button>
+      </div>
+
+      <!-- Cloudflare Verification Widget -->
+      <div class="cloudflare-box" id="cfBox">
+        <div class="cf-left">
+          <div class="cf-spinner" id="cfSpinner"></div>
+          <div class="cf-success-icon" id="cfSuccessIcon">✓</div>
+          <span class="cf-status-text" id="cfText">Verifying you are human...</span>
+        </div>
+        <div class="cf-brand">
+          <div class="cf-cloud-logo">
+            <svg class="cf-cloud-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+            </svg>
+            CLOUDFLARE
+          </div>
+          <div class="cf-links-sub">Privacy • Help</div>
+        </div>
+      </div>
+
+      <div class="or-divider-text">Or</div>
+
+      <div class="sso-buttons-col">
+        <button class="sso-btn">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.99 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+          <span>Continue with Google</span>
+        </button>
+
+        <button class="sso-btn">
+          <svg viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span>Continue with Facebook</span>
+        </button>
+
+        <button class="sso-btn">
+          <svg viewBox="0 0 23 23"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
+          <span>Continue with Microsoft</span>
+        </button>
+
+        <button class="sso-btn">
+          <svg viewBox="0 0 24 24" fill="#000000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <span>Continue with X</span>
+        </button>
+
+        <button class="sso-btn">
+          <svg viewBox="0 0 24 24" fill="#6001d2"><path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12c0-6.627-5.373-12-12-12zm-1.875 5.625h2.25l2.25 4.875 2.25-4.875h2.25l-3.375 7.125v4.875h-2.25v-4.875l-3.375-7.125z"/></svg>
+          <span>Continue with Yahoo</span>
+        </button>
+
+        <button class="sso-btn">
+          <svg viewBox="0 0 24 24" fill="#000000"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.63-.77 1.06-1.85.94-2.93-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.95 2.82 1.02.08 2.05-.49 2.68-1.26z"/></svg>
+          <span>Continue with Apple</span>
+        </button>
+      </div>
+
+      <button class="back-to-dashboard-btn" id="closeAuthBtn">
+        ← Back to Hireme Dashboard
+      </button>
+    </div>
+  </div>
+
+  <div class="toast-msg" id="toastMsg">Board link copied to clipboard!</div>
+
+  <script>
+    // COMPLETE BOOKMARK CATEGORIES AND LINKS (ALL PRESERVED + ANIME / MOVIE AT TOP)
+    const OSINT_DATA = [
+      {
+        category: "ANIME / MOVIE",
+        links: [
+          { name: "Film TV", url: "https://filmtv.co.in/download/" },
+          { name: "Rishanime", url: "https://www.rishanime.xyz/?m=1" },
+          { name: "Theogpirotbot", url: "https://theogpiratebot.online/" },
+          { name: "Animrulz", url: "https://animerulz.co.in/" },
+          { name: "Toonworld4all", url: "https://toonworld4all.me/" }
+        ]
+      },
+      {
+        category: "THROWAWAY CONTACT",
+        links: [
+          { name: "Onlinesim.net", url: "https://onlinesim.io/" },
+          { name: "DoNotPay", url: "https://donotpay.com/learn/temporary-phone-number/" },
+          { name: "VoIP Guide: VoIPSuite", url: "https://inteltechniques.com/voip.suite.html" },
+          { name: "Twilio CLI Guide", url: "https://inteltechniques.com/voip.twilio.cli.html" },
+          { name: "10minutemail.com", url: "https://10minutemail.com/" },
+          { name: "AnonAddy", url: "https://anonaddy.com/" },
+          { name: "SimpleLogin", url: "https://simplelogin.io/" },
+          { name: "Mail Drop", url: "https://maildrop.cc/" },
+          { name: "Send text free", url: "https://globfone.com/send-text/" },
+          { name: "SendaText", url: "https://www.sendatext.co/" },
+          { name: "Free Fax", url: "https://faxzero.com/" },
+          { name: "Receive SMS Online", url: "http://freesmsverification.com/" },
+          { name: "Receive SMS Online for FREE", url: "https://hs3x.com/" },
+          { name: "Simstome.com", url: "https://smstome.com" },
+          { name: "Receive SMS Online For Free", url: "https://hs3x.com/" },
+          { name: "Amazon SNS", url: "https://aws.amazon.com/sns/" },
+          { name: "Twilio", url: "https://www.twilio.com/" },
+          { name: "One-time Mobile by @OsintStash", url: "https://threader.app/thread/1199785692274077696" }
+        ]
+      },
+      {
+        category: "ID GENERATOR",
+        links: [
+          { name: "Username Generator", url: "https://www.lastpass.com/features/username-generator" },
+          { name: "Fake Name Generator", url: "https://www.fakenamegenerator.com/" },
+          { name: "Resume Generator", url: "https://thisresumedoesnotexist.com/" },
+          { name: "International Naime Generator", url: "https://www.behindthename.com/random/" },
+          { name: "Windows Phone IMEI Generator", url: "https://wpimeigenerator.github.io/" },
+          { name: "IMEI Number Generator", url: "https://dyrk.org/tools/imei/" },
+          { name: "US SSN / Driver License / State ID / Passport / Ta...", url: "https://www.elfqrin.com/usssndriverlicenseidgen.php" },
+          { name: "Washington State Driver's License Generator", url: "https://mmarvick.github.io/wa-drivers-license/" },
+          { name: "Fake Drivers License Generator", url: "https://fakeinfo.net/drivers-license-generator" },
+          { name: "This Rental Does Not Exist", url: "https://thisrentaldoesnotexist.com/" },
+          { name: "Face Photo Generator", url: "https://thispersondoesnotexist.com/" },
+          { name: "Random Face Generator", url: "https://fakeinfo.net/random-face-generator" },
+          { name: "Credit Card Generator", url: "https://www.fakenamegenerator.com/credit-card-validator.php" },
+          { name: "PIC/CIC Code Database", url: "https://www.allredtech.com/" },
+          { name: "SIN Generator", url: "https://www.fakenamegenerator.com/social-insurance-number.php" },
+          { name: "ABA Generator", url: "https://www.fakenamegenerator.com/aba-validator.php" },
+          { name: "VIN Generator", url: "https://www.fakenamegenerator.com/vehicle-identification-number.php" },
+          { name: "NINO Generator", url: "https://www.fakenamegenerator.com/national-insurance-number.php" },
+          { name: "SSN Generator", url: "https://www.fakenamegenerator.com/social-security-number.php" },
+          { name: "IID Generator by Georgy Bunin", url: "https://georgybu.github.io/IID_Generator/" },
+          { name: "GUID/UUID and short GUID generator", url: "https://richardkundl.github.io/shortguid/" },
+          { name: "Nano ID CC", url: "https://zelark.github.io/nano-id-cc/" },
+          { name: "Generate SA ID Numbers", url: "https://chris927.github.io/generate-sa-idnumbers/" },
+          { name: "Decoding Social Security Numbers", url: "https://stevemorse.org/ssn/ssn.html" },
+          { name: "Encoding and Decoding Driver's License Numbers", url: "https://stevemorse.org/dl/dl.html" },
+          { name: "Dating Profile Generator", url: "https://www.dating-profile-generator.org.uk/" },
+          { name: "Fake Identity ID Random Name Generator", url: "https://www.elfqrin.com/fakeid.php" },
+          { name: "Fake Company Name Generator", url: "https://fakeinfo.net/company-name-generator" },
+          { name: "Twitter Profile Generator", url: "https://fakeinfo.net/fake-twitter-profile-generator" },
+          { name: "Fake Tiktok Profile Generator", url: "https://fakeinfo.net/fake-tiktok-profile-gererator" },
+          { name: "Fake Youtube Channel Generator", url: "https://fakeinfo.net/fake-youtube-channel-generator" },
+          { name: "Resume Builder", url: "https://vinaysomawat.github.io/Resume-Builder/" },
+          { name: "Fake Generator Tools", url: "https://fauxid.com/tools" }
+        ]
+      },
+            {
+        category: "SANDBOX / EMULATOR",
+        links: [
+          { name: "Kasm", url: "https://kasmweb.com/" },
+          { name: "Bluestacks", url: "https://www.bluestacks.com/" },
+          { name: "Genymotion", url: "https://www.genymotion.com/" },
+          { name: "PrimeOS", url: "https://www.primeos.in/" },
+          { name: "BigNox", url: "https://www.bignox.com/" },
+          { name: "Memuplay.com", url: "https://www.memuplay.com/" },
+          { name: "Ldplayer.net", url: "https://www.ldplayer.net/" }
+        ]
+      },
+      {
+        category: "PRODUCTIVITY",
+        links: [
+          { name: "unfurl", url: "https://dfir.blog/unfurl/" },
+          { name: "Wolfram Alpha", url: "https://www.wolframalpha.com/" },
+          { name: "Cryptpad.fr", url: "https://cryptpad.fr/" },
+          { name: "Recontool.org", url: "https://recontool.org/" },
+          { name: "MindMup 2", url: "https://app.mindmup.com/map/new" },
+          { name: "Dotspotter", url: "https://www.forensicdots.de/" },
+          { name: "Encrypted Pastebin", url: "https://defuse.ca/pastebin.htm" },
+          { name: "PrivateBin", url: "https://privatebin.net/" },
+          { name: "Bin.disroot.org", url: "https://bin.disroot.org/" },
+          { name: "Framadrop", url: "https://framadrop.org/en/" },
+          { name: "Pad.riseup.net", url: "https://pad.riseup.net/" },
+          { name: "EtherCalc", url: "https://ethercalc.net/" },
+          { name: "Proofread Bot", url: "https://proofreadbot.com/" },
+          { name: "Write.as", url: "https://write.as/" },
+          { name: "Cryptee", url: "https://crypt.ee/" },
+          { name: "dudle", url: "https://dudle.inf.tu-dresden.de/anonymous/" },
+          { name: "Airborn.io", url: "https://www.airborn.io/" },
+          { name: "ZOOM URL Generator", url: "https://skyzh.github.io/zoom-url-generator/" },
+          { name: "Tor 2web", url: "https://www.tor2web.org/" },
+          { name: "archive.is", url: "https://archive.is/" },
+          { name: "Wayback Machine", url: "https://web.archive.org/" },
+          { name: "waybackpy", url: "https://pypi.org/project/waybackpy/" },
+          { name: "Cached Pages", url: "http://www.cachedpages.com/" },
+          { name: "Google Cached Pages of Any Website", url: "https://cachedview.com/" },
+          { name: "Oldweb.today", url: "http://oldweb.today/" },
+          { name: "Unpaywall", url: "https://unpaywall.org/products/extension" },
+          { name: "DeepL", url: "https://www.deepl.com/translator" },
+          { name: "Project CSV", url: "https://projectcsv.github.io/" },
+          { name: "CSV to HTML", url: "https://codepen.io/RYJASM/pen/LVEWgV" },
+          { name: "Monaco Editor", url: "https://microsoft.github.io/monaco-editor/playground.html" },
+          { name: "Online Flow Chart Editor", url: "https://mermaid-js.github.io/mermaid-live-editor/" },
+          { name: "Markdown Editor", url: "https://markdown-editor.github.io/" },
+          { name: "SQL Editor", url: "https://www.mycompiler.io/new/sql" },
+          { name: "SQLite Viewer", url: "https://inloop.github.io/sqlite-viewer/" },
+          { name: "OCR Text Extractor", url: "https://osint.sh/ocr/" },
+          { name: "Wetranscriber", url: "https://www.wetranscriber.com/" },
+          { name: "Tophonetics.com", url: "https://tophonetics.com/" },
+          { name: "Google Translate", url: "https://translate.google.com/" },
+          { name: "Multi Translate", url: "https://translate.mix.pink/" },
+          { name: "Yandex.Translate", url: "https://translate.yandex.com/" },
+          { name: "Bing Microsoft Translator", url: "https://www.bing.com/translator" },
+          { name: "Reverso", url: "https://www.reverso.net/text_translation.aspx?lang=EN" },
+          { name: "Translate", url: "https://www.translatedict.com/" },
+          { name: "Ntext to speech online", url: "https://www.naturalreaders.com/online/" },
+          { name: "TTSReader", url: "https://ttsreader.com/" },
+          { name: "Online Sequencer", url: "https://onlinesequencer.net/" },
+          { name: "FetchRSS", url: "https://fetchrss.com/" },
+          { name: "Sci-hub", url: "https://sci-hub.st/" },
+          { name: "Libgen.fun", url: "https://libgen.fun/" },
+          { name: "Z-lib.org", url: "https://z-lib.org/" },
+          { name: "PDF Drive", url: "https://www.pdfdrive.com/" },
+          { name: "arXiv.org", url: "https://arxiv.org/" },
+          { name: "bioRxiv.org", url: "https://biorxiv.org/" },
+          { name: "Project Gutenberg", url: "https://www.gutenberg.org/" },
+          { name: "Trantor.is", url: "https://trantor.is/" },
+          { name: "Shadowlibraries.github.io", url: "https://shadowlibraries.github.io/" },
+          { name: "Editor.typely.com", url: "https://editor.typely.com/" }
+        ]
+      },
+      {
+        category: "FILE UPLOAD",
+        links: [
+          { name: "MEGA", url: "https://mega.io/" },
+          { name: "transfer.sh", url: "https://transfer.sh/" },
+          { name: "Send", url: "https://send.actionsack.com/" },
+          { name: "Keep.sh", url: "https://keep.sh/" },
+          { name: "Upload | Disroot", url: "https://disroot.org/en/services/upload" },
+          { name: "BlackHole", url: "https://blackhole.run/" }
+        ]
+      },
+      {
+        category: "TOOLSET",
+        links: [
+          { name: "CyberChef", url: "https://gchq.github.io/CyberChef/" },
+          { name: "mitaka", url: "https://github.com/ninoseki/mitaka" },
+          { name: "Frack", url: "https://github.com/sensepost/Frack" },
+          { name: "pywhat", url: "https://pypi.org/project/pywhat/" },
+          { name: "the Harvester", url: "https://pypi.org/project/theHarvester/" },
+          { name: "Online Tools", url: "https://emn178.github.io/online-tools/" },
+          { name: "Graphviz Online", url: "https://dreampuf.github.io/GraphvizOnline/" },
+          { name: "CodePen", url: "https://codepen.io/" },
+          { name: "Diceware Generator", url: "https://www.rempe.us/diceware/#eff" },
+          { name: "Checkphish.ai", url: "https://checkphish.ai/" },
+          { name: "x86 and x64 Intel Assembler", url: "https://defuse.ca/online-x86-assembler.htm" },
+          { name: "Big Number Calculator", url: "https://defuse.ca/big-number-calculator.htm" },
+          { name: "Text and File Hash Calculator", url: "https://defuse.ca/checksums.htm" },
+          { name: "HTML Sanitizer Tool", url: "https://defuse.ca/html-sanitize.htm" },
+          { name: "URL Decoder/Encoder", url: "https://meyerweb.com/eric/tools/dencoder/" },
+          { name: "ODA - The Online Disassembler", url: "https://onlinedisassembler.com/odaweb/" },
+          { name: "Disasm.pro", url: "https://disasm.pro/" },
+          { name: "Fotor", url: "https://www.fotor.com/photo-editor-app/editor/basic" },
+          { name: "Decompiler.com", url: "http://www.decompiler.com/" },
+          { name: "Google Colaboratory", url: "https://colab.research.google.com/notebooks/intro.ipynb" },
+          { name: "Compiler Explorer", url: "https://godbolt.org/" },
+          { name: "HTML editor", url: "https://onlinehtmleditor.dev/" },
+          { name: "Online Color Picker", url: "https://colorpicker.me/" },
+          { name: "Convert text to image file", url: "https://text2image.com/en/" },
+          { name: "relational algebra calculator", url: "https://dbis-uibk.github.io/relax/calc/local/uibk/local/0" },
+          { name: "Data Structure: Infix Postfix Prefix - Converter & ...", url: "https://raj457036.github.io/Simple-Tools/prefixAndPostfixConvertor.html" },
+          { name: "RSA encryption, decryption and prime calculator", url: "https://canihavesomecoffee.github.io/js-rsa-tool/" },
+          { name: "Tools.digitalmethods.net", url: "https://tools.digitalmethods.net/beta/searchEngineScraper/" },
+          { name: "Steganography Online", url: "https://stylesuxx.github.io/steganography/" },
+          { name: "Torrent to Magnet", url: "https://nutbread.github.io/t2m/" },
+          { name: "Anonymous YouTube Playlists", url: "https://neverducky.github.io/anonymous-youtube-playlists/" },
+          { name: "Vega Editor", url: "https://vega.github.io/editor/#/" },
+          { name: "DISA Code Template Generator", url: "https://duncanford.github.io/disa-code-generator" },
+          { name: "Canary Tokens", url: "http://canarytokens.org/generate" },
+          { name: "explainshell.com", url: "https://explainshell.com/" },
+          { name: "Google Colaboratory (Main)", url: "https://colab.research.google.com/" },
+          { name: "osint-cli-tool-skeleton", url: "https://pypi.org/project/osint-cli-tool-skeleton/" }
+        ]
+      },
+            {
+        category: "HASH RECOVERY",
+        links: [
+          { name: "CrackStation", url: "https://crackstation.net" },
+          { name: "Hashmob Community", url: "https://hashmob.net/search" },
+          { name: "Hashes.com", url: "https://hashes.com/en/decrypt/hash" },
+          { name: "Online Password Hash Crack", url: "https://www.onlinehashcrack.com/" },
+          { name: "Md5 Decrypt & Encrypt", url: "https://md5decrypt.net/en/" },
+          { name: "MD5 reverse lookup", url: "https://md5.gromweb.com/" },
+          { name: "Ultimate Hashing", url: "https://md5hashing.net/" },
+          { name: "Hashes.org", url: "https://hashes.org/search.php" }
+        ]
+      },
+      {
+        category: "DOWNLOADER",
+        links: [
+          { name: "Media-downloader.net", url: "https://media-downloader.net/" },
+          { name: "Imgur Album Downloader", url: "https://dschep.github.io/imgur-album-downloader/#/" },
+          { name: "Export Comments", url: "https://exportcomments.com/" },
+          { name: "Image Extractor", url: "https://extract.pics/" },
+          { name: "Loader.to", url: "https://loader.to/" },
+          { name: "Commentexporter.com", url: "https://www.commentexporter.com/" },
+          { name: "Link Gopher", url: "https://sites.google.com/site/linkgopher/" },
+          { name: "Page Links Extractor Tool", url: "https://shadowcrypt.net/tools/pagelinks" },
+          { name: "Online Tool to Extract Links from any Web Page", url: "https://hackertarget.com/extract-links/" }
+        ]
+      },
+      {
+        category: "PRIVACY/SECURITY",
+        links: [
+          { name: "OSID Privacy Services by Michael Bazzell", url: "https://inteltechniques.com/workbook.html" },
+          { name: "Privacy Guides", url: "https://privacyguides.org/" },
+          { name: "Surveillance Self-Defense", url: "https://ssd.eff.org/" },
+          { name: "gofoss.net", url: "https://gofoss.net/" },
+          { name: "Consumer Reports Security Planner", url: "https://securityplanner.consumerreports.org/" },
+          { name: "Security in a Box", url: "https://securityinabox.org/en/" },
+          { name: "Counter-OSINT guide for Russians", url: "https://github.com/soxoj/counter-osint-guide-ru" },
+          { name: "PRISM Break", url: "https://prism-break.org/en/" },
+          { name: "Security First - Umbrella", url: "https://secfirst.org/umbrella/" },
+          { name: "Matweb.info", url: "https://matweb.info/" },
+          { name: "Metacleaner.com", url: "https://metacleaner.com/" },
+          { name: "Image Scrubber", url: "https://everestpipkin.github.io/image-scrubber/" },
+          { name: "View Exif data online, remove Exif online", url: "http://www.verexif.com/en/" },
+          { name: "Bitcoinprivacy.guide", url: "https://bitcoinprivacy.guide/" },
+          { name: "LocalBitcoins", url: "https://localbitcoins.com/" },
+          { name: "Localmonero.co", url: "https://localmonero.co/" },
+          { name: "Bitonic", url: "https://bitonic.nl/en/" },
+          { name: "Paxful", url: "https://paxful.com/" },
+          { name: "Speech Jammer", url: "https://mynoise.net/NoiseMachines/audioJammerNoiseGenerator.php" },
+          { name: "Stutterbox", url: "https://www.stutterbox.co.uk/" },
+          { name: "StegOnline", url: "https://stegonline.georgeom.net/upload" },
+          { name: "The Hitchhiker's Guide to Online Anonymity", url: "https://anonymousplanet.org/guide.html" }
+        ]
+      },
+      {
+        category: "SECURE COMMUNICATION",
+        links: [
+          { name: "Signal", url: "https://signal.org/" },
+          { name: "Element", url: "https://element.io/" },
+          { name: "Briar", url: "https://briarproject.org/" },
+          { name: "Jami.net", url: "https://jami.net/" },
+          { name: "Jitsi Meet", url: "https://meet.jit.si/" },
+          { name: "Rocket.Chat", url: "https://rocket.chat/" },
+          { name: "Wire", url: "https://wire.com/en/" },
+          { name: "Nekogram.app", url: "https://nekogram.app/" },
+          { name: "Telegram", url: "https://www.telegram.org/" },
+          { name: "Brave Talk", url: "https://talk.brave.com/" },
+          { name: "The Tor Project", url: "https://www.torproject.org/download/" },
+          { name: "Brave Browser", url: "https://brave.com/" },
+          { name: "Psiphon", url: "https://www.psiphon.ca/" },
+          { name: "ProtonVPN", url: "https://protonvpn.com/" },
+          { name: "hide.me VPN", url: "https://hide.me/en/" },
+          { name: "AdGuard VPN", url: "https://adguard-vpn.com/en/welcome.html" },
+          { name: "I2P", url: "https://geti2p.net/en/download" },
+          { name: "VPN Services", url: "https://privacyguides.org/providers/vpn/" },
+          { name: "Browser Recommendations", url: "https://privacyguides.org/browsers/" },
+          { name: "Getsession.org", url: "https://getsession.org/" }
+        ]
+      },
+      {
+        category: "RESOURCES",
+        links: [
+          { name: "OH SHINT! Welcome Aboard", url: "https://ohshint.gitbook.io/" },
+          { name: "The Ultimate OSINT Collection", url: "https://start.me/p/DPYPMz/the-ultimate-osint-collection" },
+          { name: "OSINT Resources in Canada", url: "https://start.me/p/aLe0vp/osint-resources-in-canada" },
+          { name: "Nixintel's OSINT Resource List", url: "https://start.me/p/rx6Qj8/nixintel-s-osint-resource-list" },
+          { name: "FAROS OSINT Resources", url: "https://start.me/p/1kvvxN/faros-osint-resources" },
+          { name: "AML Toolbox", url: "https://start.me/p/rxeRqr/aml-toolbox" },
+          { name: "TI", url: "https://start.me/p/rxRbpo/ti" },
+          { name: "TOOLKIT", url: "https://start.me/p/W1AXYo/toolkit" },
+          { name: "Trouble Fake", url: "https://start.me/p/QRQb0O/trouble-fake" },
+          { name: "Me OSINT Is A State Of Mind", url: "https://medium.com/secjuice/osint-as-a-mindset-7d42ad72113d" },
+          { name: "sinwindie/OSINT", url: "https://github.com/sinwindie/OSINT" },
+          { name: "New Online Investigation (OSINT) Resources - IntelT...", url: "https://inteltechniques.com/blog/2019/04/09/new-online-investigation-osint-resources/" },
+          { name: "Technisette", url: "https://www.technisette.com/p/home" },
+          { name: "OSINT Framework", url: "https://osintframework.com/" },
+          { name: "jivoi/awesome-osint", url: "https://github.com/jivoi/awesome-osint" },
+          { name: "ME START CARING STOP SHARING", url: "https://medium.com/@Dutchosintguy/start-caring-stop-sharing-9c108d957b2c" },
+          { name: "Osint Curious OSINT Resource List", url: "https://docs.google.com/document/d/14li22wAG2Wh2y0UhgBjbqEvZJCDsNZY8vpUAJ_jJ5X8/edit" },
+          { name: "OSINT Tools", url: "https://www.aware-online.com/en/osint-tools/website-tools/" },
+          { name: "OSINT tools for investigating websites", url: "https://www.osinttechniques.com/osint-tools.html" },
+          { name: "Shodan Cheat Sheet", url: "https://thedarksource.com/shodan-cheat-sheet/" },
+          { name: "Week in OSINT", url: "https://sector035.nl/articles/category:week-in-osint" },
+          { name: "Osint.team", url: "https://osint.team/" },
+          { name: "Query Tool", url: "https://github.com/oryon-osint/querytool" },
+          { name: "Investigating the source code of a website", url: "https://www.aware-online.com/en/osint-tutorials/investigating-the-source-code-of-a-website/" },
+          { name: "Find open FTP Servers", url: "https://www.aware-online.com/en/osint-tutorials/find-open-ftp-servers/" },
+          { name: "Choose your wallet", url: "https://bitcoin.org/en/choose-your-wallet" },
+          { name: "10 Minute Tips", url: "https://osintcurio.us/10-minute-tips/" },
+          { name: "Webint Master", url: "https://webintmaster.com/" },
+          { name: "DFIR Diva", url: "https://dfirdiva.com/hooked-on-osint/" },
+          { name: "QBoolean Strings | Tools", url: "https://booleanstrings.com/tools/" },
+          { name: "osintme.com", url: "https://www.osintme.com/" },
+          { name: "Jake Creps", url: "https://jakecreps.com/" },
+          { name: "reknowledge", url: "https://www.reknowledge.tech/" },
+          { name: "Bellingcat's Online Investigation Toolkit", url: "https://docs.google.com/spreadsheets/d/18rtqh8EG2q1xBo2cLNyhIDuK9jrPGwYr9DI2UncoqJQ/edit#gid=930747607" },
+          { name: "@Ivan30394639 OSINT tools collection", url: "https://cipher387.github.io/osint_stuff_tool_collection/" },
+          { name: "The Top 132 Osint Open Source Projects", url: "https://awesomeopensource.com/projects/osint" },
+          { name: "30 best OSINT extensions for Google Chrome - osintm...", url: "https://www.osintme.com/index.php/2021/06/30/30-best-osint-extensions-for-google-chrome/" },
+          { name: "Where Can I Find... - Free DFIR Related Training", url: "https://freetraining.dfirdiva.com/where-can-i-find" },
+          { name: "Awesome Deblurring", url: "https://github.com/subeeshvasu/Awesome-Deblurring" },
+          { name: "OSINT.SH", url: "https://osint.sh/" },
+          { name: "OSINT Techniques", url: "https://www.osinttechniques.com/" },
+          { name: "OSINT aka Atvirųjų šaltinių žvalgyba", url: "https://blog.parakomanai.lt/osint-387e80bdc901" },
+          { name: "CTI & OSINT Online Resources", url: "https://docs.google.com/spreadsheets/d/1klugQqw6POlBtuzon8S0b18-gpsDwX-5OYRrB7TyNEw/edit#gid=0" },
+          { name: "Emsisoft Decryptor for Avaddon", url: "https://www.emsisoft.com/ransomware-decryption-tools/avaddon" },
+          { name: "Xhwosint (@harrywald80)", url: "https://twitter.com/harrywald80" },
+          { name: "Stefanie Proto (@sprp77)", url: "https://twitter.com/sprp77" },
+          { name: "Awesomelists.top", url: "http://awesomelists.top/" },
+          { name: "GitHub Awesome Search", url: "https://github.motakasoft.com/awesome/" },
+          { name: "Ph055a OSINT_Collection", url: "https://github.com/Ph055a/OSINT_Collection" },
+          { name: "MetaOSINT", url: "https://metaosint.github.io/" },
+          { name: "Osint.support", url: "https://osint.support/" },
+          { name: "Sprp77/ My-Google-CSE", url: "https://github.com/Sprp77/My-Google-CSE/blob/master/List%201" },
+          { name: "How to Build an OSINT Super Machine for People Su...", url: "https://outline.com/GZbkZA" },
+          { name: "How to find anyone with an advanced LinkedIn Peopl...", url: "https://nubela.co/blog/how-to-find-anyone-with-an-advanced-linkedin-people-search/" }
+        ]
+      },
+            {
+        category: "WEATHER",
+        links: [
+          { name: "OpenWeatherMap", url: "https://openweathermap.org/" },
+          { name: "Weather History & Data Archive", url: "https://www.wunderground.com/history" },
+          { name: "World Temperatures - Weather Around The World", url: "https://www.timeanddate.com/weather/" },
+          { name: "AccuWeather", url: "https://www.accuweather.com" }
+        ]
+      },
+      {
+        category: "THREAT INTEL",
+        links: [
+          { name: "Threatbutt", url: "https://threatbutt.com/map/" },
+          { name: "Cyberthreat Real-Time Map", url: "https://cybermap.kaspersky.com/" },
+          { name: "Live Cyber Attack Threat Map", url: "https://www.checkpoint.com/ThreatPortal/livemap.html" },
+          { name: "Digital Attack Map", url: "https://www.digitalattackmap.com/" },
+          { name: "Cyber Threat Map", url: "https://www.fireeye.com/cyber-map/threat-map.html" },
+          { name: "Bitdefender Threat Map", url: "https://threatmap.bitdefender.com/" },
+          { name: "Cyber Threat Intelligence", url: "https://pulsedive.com/" },
+          { name: "Cisco Talos Intelligence Group", url: "https://talosintelligence.com/" },
+          { name: "Fortinet Threat Map", url: "https://threatmap.fortiguard.com/" },
+          { name: "FortiGuard", url: "http://www.fortiguard.com/" },
+          { name: "Threat Miner", url: "https://www.threatminer.org/" },
+          { name: "cymon", url: "https://cymon.io/" },
+          { name: "intelowlproject/IntelOwl", url: "https://github.com/intelowlproject/IntelOwl" },
+          { name: "Visualizing Global Internet Performance", url: "https://www.akamai.com/us/en/solutions/intelligent-platform/visualizing-akamai/real-time-web-monitor.jsp" },
+          { name: "THREAT MAP by Looking Glass", url: "https://map.lookingglasscyber.com/" },
+          { name: "NETSCOUT Cyber Threat Horizon", url: "https://horizon.netscout.com/" },
+          { name: "APTnotes", url: "https://github.com/aptnotes/data" }
+        ]
+      },
+      {
+        category: "OTHER",
+        links: [
+          { name: "https://cryptome.wikileaks.org/", url: "https://cryptome.wikileaks.org/" },
+          { name: "Nextstrain", url: "https://nextstrain.org/" }
+        ]
+      },
+      {
+        category: "IDENTITY RESOLUTION",
+        links: [
+          { name: "Clearbit [Registration]", url: "https://dashboard.clearbit.com/lookup" },
+          { name: "FullContact API [Registration]", url: "https://dashboard.fullcontact.com/login" },
+          { name: "Aeroleads.com [Registration]", url: "https://aeroleads.com/" }
+        ]
+      },
+      {
+        category: "RESOLVERS",
+        links: [
+          { name: "Skype Resolver", url: "http://www.skypeipresolver.net/index.php" },
+          { name: "PSN Resolver", url: "https://playstationresolver.xyz/" },
+          { name: "Cloudflare Resolver", url: "http://www.skypeipresolver.net/cloudflare.php" },
+          { name: "Cloudflare Resolver Tool", url: "https://shadowcrypt.net/tools/cloudflare" },
+          { name: "Discord Resolver", url: "https://www.leaked.site/index.php?resolver/discord.0/" },
+          { name: "Xboxresolver.com", url: "https://xboxresolver.com/" }
+        ]
+      },
+      {
+        category: "ANALYTICS",
+        links: [
+          { name: "SEO Resources Search Engine", url: "https://cse.google.com/cse/publicurl?cx=005797772976587943970:i7q6z1kjm1w" },
+          { name: "Hashatit", url: "https://www.hashatit.com/" },
+          { name: "Social Mentions", url: "https://www.social-searcher.com/media-monitoring/" },
+          { name: "Social Trends", url: "https://www.social-searcher.com/social-trends/" },
+          { name: "Mentionmapp Analytics", url: "https://mentionmapp.com/" },
+          { name: "Anonymous AdPreview Tool", url: "https://ads.google.com/anon/AdPreview" },
+          { name: "Semrush", url: "https://www.semrush.com/" },
+          { name: "Network Tool", url: "https://osome.iu.edu/tools/networks/#/" },
+          { name: "Trends Tool", url: "https://osome.iu.edu/tools/trends/#/" },
+          { name: "CoVaxxy", url: "https://osome.iu.edu/tools/covaxxy" }
+        ]
+      }
+    ];
+
+    // Helper: Clean Google Favicon URL
+    function getFaviconUrl(rawUrl) {
+      try {
+        const domain = new URL(rawUrl).hostname;
+        return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
+      } catch (e) {
+        return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><circle cx="12" cy="12" r="10"/></svg>';
+      }
+    }
+
+    // 1. WORLD CLOCK LOGIC
+    const WORLD_CITIES = [
+      { flag: "🇮🇳", city: "New Delhi", country: "India", tz: "Asia/Kolkata", code: "IST" },
+      { flag: "🇺🇸", city: "New York", country: "USA", tz: "America/New_York", code: "EST/EDT" },
+      { flag: "🇬🇧", city: "London", country: "UK", tz: "Europe/London", code: "GMT/BST" },
+      { flag: "🇯🇵", city: "Tokyo", country: "Japan", tz: "Asia/Tokyo", code: "JST" },
+      { flag: "🇦🇺", city: "Sydney", country: "Australia", tz: "Australia/Sydney", code: "AEST" }
+    ];
+
+    let is24HourClock = true;
+
+    function getTzOffsetString(tz) {
+      try {
+        const now = new Date();
+        const dateInTz = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+        const dateInUTC = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+        const diffMinutes = Math.round((dateInTz - dateInUTC) / 60000);
+        const hours = Math.floor(Math.abs(diffMinutes) / 60);
+        const mins = Math.abs(diffMinutes) % 60;
+        const sign = diffMinutes >= 0 ? '+' : '-';
+        return mins > 0 ? `${sign}${hours}:${mins.toString().padStart(2, '0')}` : `${sign}${hours}h`;
+      } catch(e) {
+        return '';
+      }
+    }
+
+    function createWorldClockCard() {
+      const card = document.createElement('div');
+      card.className = 'cat-card';
+      card.id = 'worldClockWidgetCard';
+
+      card.innerHTML = `
+        <div class="cat-header">
+          <div class="cat-title-text">WORLD CLOCK</div>
+          <div class="cat-header-right">
+            <button class="clock-format-toggle" id="clockFormatBtn">${is24HourClock ? '24H' : '12H'}</button>
+            <span class="cat-toggle-chevron">▾</span>
+          </div>
+        </div>
+        <div class="links-list" id="clockWidgetList">
+          <div class="clock-widget-body" id="clockItemsContainer"></div>
+        </div>
+      `;
+
+      const header = card.querySelector('.cat-header');
+      const list = card.querySelector('#clockWidgetList');
+      const chevron = card.querySelector('.cat-toggle-chevron');
+      const formatBtn = card.querySelector('#clockFormatBtn');
+
+      formatBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        is24HourClock = !is24HourClock;
+        formatBtn.textContent = is24HourClock ? '24H' : '12H';
+        updateClockTimes();
+      });
+
+      header.addEventListener('click', () => {
+        list.classList.toggle('collapsed');
+        chevron.classList.toggle('collapsed');
+      });
+
+      return card;
+    }
+
+    function updateClockTimes() {
+      const container = document.getElementById('clockItemsContainer');
+      if (!container) return;
+
+      const now = new Date();
+      container.innerHTML = '';
+
+      WORLD_CITIES.forEach(c => {
+        const timeFormatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: c.tz,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: !is24HourClock
+        });
+
+        const dateFormatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: c.tz,
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric'
+        });
+
+        const timeStr = timeFormatter.format(now);
+        const dateStr = dateFormatter.format(now);
+        const offsetStr = getTzOffsetString(c.tz);
+
+        const row = document.createElement('div');
+        row.className = 'clock-row';
+        row.innerHTML = `
+          <div class="clock-location">
+            <div class="clock-city"><span class="clock-flag">${c.flag}</span> ${c.country} - ${c.city}</div>
+            <div class="clock-sub">${c.code} (${offsetStr})</div>
+          </div>
+          <div class="clock-time-side">
+            <div class="clock-live-time">${timeStr}</div>
+            <div class="clock-live-date">${dateStr}</div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // 2. REDDIT NEWS WIDGET LOGIC & PAGINATION
+    const REDDIT_NEWS_PAGES = [
+      {
+        page: 1,
+        featured: {
+          title: "New open-source satellite imagery parser released for OSINT investigators",
+          timeAgo: "2 hours ago",
+          desc: "A powerful Python and web-based pipeline for extracting multi-spectral indices and metadata directly from European Sentinel feeds.",
+          url: "https://www.reddit.com/r/OSINT/"
+        },
+        items: [
+          { title: "Bellingcat publishes updated geolocation verification guide", date: "Yesterday", url: "https://www.reddit.com/r/OSINT/" },
+          { title: "Tips for tracking spoofed domain infrastructure", date: "3 days ago", url: "https://www.reddit.com/r/netsec/" },
+          { title: "Community verified list of passive DNS mirrors", date: "5 days ago", url: "https://www.reddit.com/r/cybersecurity/" }
+        ]
+      },
+      {
+        page: 2,
+        featured: {
+          title: "Investigation into Telegram bot networks leaking corporate directories",
+          timeAgo: "1 week ago",
+          desc: "Reverse engineering the API signatures and backend database associations of active OSINT search bots.",
+          url: "https://www.reddit.com/r/OSINT/"
+        },
+        items: [
+          { title: "Automated WHOIS lookup script utilizing free public endpoints", date: "1 week ago", url: "https://www.reddit.com/r/OSINT/" },
+          { title: "Framework update: Mitaka v3 browser extension released", date: "2 weeks ago", url: "https://www.reddit.com/r/cybersecurity/" },
+          { title: "How to safely handle malware-laced pastebins and pastes", date: "2 weeks ago", url: "https://www.reddit.com/r/netsec/" }
+        ]
+      },
+      {
+        page: 3,
+        featured: {
+          title: "Comprehensive breakdown of camera metadata in social media CDN uploads",
+          timeAgo: "2 months ago",
+          desc: "Which platforms completely strip EXIF and which ones preserve orientation, ICC profiles, and thumbnail artifacts.",
+          url: "https://www.reddit.com/r/OSINT/"
+        },
+        items: [
+          { title: "Building a headless OSINT workstation on minimal Linux", date: "2 months ago", url: "https://www.reddit.com/r/OSINT/" },
+          { title: "Open-source intelligence challenges & CTF write-ups", date: "3 months ago", url: "https://www.reddit.com/r/securityCTF/" },
+          { title: "Archive collection of deleted Reddit threads", date: "4 months ago", url: "https://www.reddit.com/r/OSINT/" }
+        ]
+      }
+    ];
+    
+    let currentRedditPage = 1;
+
+    function createRedditNewsCard() {
+      const card = document.createElement('div');
+      card.className = 'cat-card';
+      card.id = 'redditNewsWidgetCard';
+
+      card.innerHTML = `
+        <div class="cat-header">
+          <div class="cat-title-text">NEWS FROM REDDIT</div>
+          <div class="cat-header-right">
+            <span class="cat-count">r/OSINT</span>
+            <span class="cat-toggle-chevron">▾</span>
+          </div>
+        </div>
+        <div class="links-list" id="redditNewsList">
+          <div class="news-widget-body" id="newsWidgetBody"></div>
+        </div>
+      `;
+
+      const header = card.querySelector('.cat-header');
+      const list = card.querySelector('#redditNewsList');
+      const chevron = card.querySelector('.cat-toggle-chevron');
+
+      header.addEventListener('click', () => {
+        list.classList.toggle('collapsed');
+        chevron.classList.toggle('collapsed');
+      });
+
+      return card;
+    }
+
+    function renderRedditPageContent() {
+      const container = document.getElementById('newsWidgetBody');
+      if (!container) return;
+
+      const pageData = REDDIT_NEWS_PAGES.find(p => p.page === currentRedditPage) || REDDIT_NEWS_PAGES[0];
+      const totalPages = REDDIT_NEWS_PAGES.length;
+
+      let compactRowsHtml = pageData.items.map(item => `
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="news-compact-row">
+          <span class="news-compact-title">${item.title}</span>
+          <span class="news-compact-date">${item.date}</span>
+        </a>
+      `).join('');
+
+      container.innerHTML = `
+        <a href="${pageData.featured.url}" target="_blank" rel="noopener noreferrer" class="news-top-item">
+          <div class="news-thumbnail">r/</div>
+          <div class="news-top-details">
+            <div class="news-top-title">${pageData.featured.title}</div>
+            <div class="news-top-meta">${pageData.featured.timeAgo}</div>
+            <div class="news-top-desc">${pageData.featured.desc}</div>
+          </div>
+        </a>
+
+        <div class="news-compact-list">
+          ${compactRowsHtml}
+        </div>
+
+        <div class="news-pagination-bar">
+          <button class="news-page-btn" id="newsPrevBtn" ${currentRedditPage === 1 ? 'disabled' : ''}>&lt;</button>
+          <span class="news-page-counter">${currentRedditPage} / ${totalPages}</span>
+          <button class="news-page-btn" id="newsNextBtn" ${currentRedditPage === totalPages ? 'disabled' : ''}>&gt;</button>
+        </div>
+      `;
+
+      document.getElementById('newsPrevBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentRedditPage > 1) {
+          currentRedditPage--;
+          renderRedditPageContent();
+        }
+      });
+
+      document.getElementById('newsNextBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentRedditPage < totalPages) {
+          currentRedditPage++;
+          renderRedditPageContent();
+        }
+      });
+    }
+
+    // 3. MAIN DASHBOARD RENDER
+    const categoriesGrid = document.getElementById('categoriesGrid');
+
+    function renderDashboard(query = '') {
+      categoriesGrid.innerHTML = '';
+      const filter = query.trim().toLowerCase();
+      let matchFound = false;
+
+      const matchClock = !filter || 'world clock'.includes(filter) || 'time'.includes(filter) || 'delhi'.includes(filter);
+      const matchReddit = !filter || 'news from reddit'.includes(filter) || 'reddit'.includes(filter) || 'osint'.includes(filter);
+
+      if (matchClock) {
+        categoriesGrid.appendChild(createWorldClockCard());
+        updateClockTimes();
+        matchFound = true;
+      }
+
+      if (matchReddit) {
+        categoriesGrid.appendChild(createRedditNewsCard());
+        renderRedditPageContent();
+        matchFound = true;
+      }
+
+      OSINT_DATA.forEach((catData, catIndex) => {
+        const filteredLinks = catData.links.filter(link => {
+          if (!filter) return true;
+          return link.name.toLowerCase().includes(filter) || 
+                 link.url.toLowerCase().includes(filter) ||
+                 catData.category.toLowerCase().includes(filter);
+        });
+
+        if (filteredLinks.length === 0 && filter) return;
+
+        matchFound = true;
+
+        const card = document.createElement('div');
+        card.className = 'cat-card';
+        card.setAttribute('data-category-id', catIndex);
+
+        const header = document.createElement('div');
+        header.className = 'cat-header';
+
+        header.innerHTML = `
+          <div class="cat-title-text">${catData.category}</div>
+          <div class="cat-header-right">
+            <span class="cat-count">${filteredLinks.length}</span>
+            <span class="cat-toggle-chevron">▾</span>
+          </div>
+        `;
+
+        const linksList = document.createElement('div');
+        linksList.className = 'links-list';
+
+        filteredLinks.forEach(link => {
+          const a = document.createElement('a');
+          a.className = 'link-row';
+          a.href = link.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+
+          const img = document.createElement('img');
+          img.className = 'link-favicon';
+          img.src = getFaviconUrl(link.url);
+          img.alt = '';
+          img.loading = 'lazy';
+          img.onerror = () => {
+            img.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><circle cx="12" cy="12" r="8"/></svg>';
+          };
+
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'link-name';
+          nameSpan.textContent = link.name;
+
+          a.appendChild(img);
+          a.appendChild(nameSpan);
+          linksList.appendChild(a);
+        });
+
+        header.addEventListener('click', () => {
+          linksList.classList.toggle('collapsed');
+          const chevron = header.querySelector('.cat-toggle-chevron');
+          chevron.classList.toggle('collapsed');
+        });
+
+        card.appendChild(header);
+        card.appendChild(linksList);
+        categoriesGrid.appendChild(card);
+      });
+
+      if (!matchFound && filter) {
+        categoriesGrid.innerHTML = `
+          <div class="empty-search-state">
+            <h3 style="font-size: 18px; margin-bottom: 6px; color: #fff;">No tools found for "${filter}"</h3>
+            <p>Try searching another keyword or check category names.</p>
+          </div>
+        `;
+      }
+    }
+
+    setInterval(updateClockTimes, 1000);
+    renderDashboard();
+
+    // Search Engine
+    const searchInput = document.getElementById('searchInput');
+    const searchClearBtn = document.getElementById('searchClearBtn');
+
+    searchInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      searchClearBtn.style.display = val ? 'block' : 'none';
+      renderDashboard(val);
+    });
+
+    searchClearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchClearBtn.style.display = 'none';
+      renderDashboard('');
+      searchInput.focus();
+    });
+
+    // Three Dots Menu
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const dotsMenu = document.getElementById('dotsMenu');
+    const menuShareBtn = document.getElementById('menuShareBtn');
+    const menuCompactBtn = document.getElementById('menuCompactBtn');
+    const menuAboutBtn = document.getElementById('menuAboutBtn');
+    const menuCollapseAllBtn = document.getElementById('menuCollapseAllBtn');
+    const collapseMenuText = document.getElementById('collapseMenuText');
+    const collapseMenuIcon = document.getElementById('collapseMenuIcon');
+    const toastMsg = document.getElementById('toastMsg');
+
+    function showToast(text) {
+      toastMsg.textContent = text;
+      toastMsg.classList.add('show');
+      setTimeout(() => toastMsg.classList.remove('show'), 2200);
+    }
+
+    menuToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dotsMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dotsMenu.contains(e.target) && e.target !== menuToggleBtn) {
+        dotsMenu.classList.remove('show');
+      }
+    });
+
+    menuShareBtn.addEventListener('click', () => {
+      dotsMenu.classList.remove('show');
+      const shareUrl = window.location.href;
+      if (navigator.share) {
+        navigator.share({
+          title: 'Hireme - GEOINT Directory',
+          text: 'Comprehensive OSINT & Intelligence Tools Directory curated on Hireme',
+          url: shareUrl
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast('Board link copied to clipboard!');
+        }).catch(() => {
+          showToast('Failed to copy link.');
+        });
+      }
+    });
+
+    menuCompactBtn.addEventListener('click', () => {
+      dotsMenu.classList.remove('show');
+      document.body.classList.toggle('compact-mode');
+      const isCompact = document.body.classList.contains('compact-mode');
+      showToast(isCompact ? 'Compact view enabled' : 'Default view restored');
+    });
+
+    menuAboutBtn.addEventListener('click', () => {
+      dotsMenu.classList.remove('show');
+      profileModalOverlay.classList.add('active');
+    });
+
+    let allCollapsed = false;
+    menuCollapseAllBtn.addEventListener('click', () => {
+      dotsMenu.classList.remove('show');
+      allCollapsed = !allCollapsed;
+
+      document.querySelectorAll('.links-list').forEach(list => {
+        if (allCollapsed) {
+          list.classList.add('collapsed');
+        } else {
+          list.classList.remove('collapsed');
+        }
+      });
+      
+      document.querySelectorAll('.cat-toggle-chevron').forEach(ch => {
+        if (allCollapsed) {
+          ch.classList.add('collapsed');
+        } else {
+          ch.classList.remove('collapsed');
+        }
+      });
+
+      if (allCollapsed) {
+        collapseMenuText.textContent = 'Expand all widgets';
+        collapseMenuIcon.innerHTML = '<polyline points="4 6 12 14 20 6"></polyline>';
+        showToast('All widgets collapsed');
+      } else {
+        collapseMenuText.textContent = 'Collapse all widgets';
+        collapseMenuIcon.innerHTML = '<polyline points="4 14 12 6 20 14"></polyline>';
+        showToast('All widgets expanded');
+      }
+    });
+
+    // Modal & Auth Screens
+    const openProfileBtn = document.getElementById('openProfileBtn');
+    const userIconBtn = document.getElementById('userIconBtn');
+    const profileModalOverlay = document.getElementById('profileModalOverlay');
+    const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
+    const openAuthPageBtn = document.getElementById('openAuthPageBtn');
+    const viewProfileInnerLink = document.getElementById('viewProfileInnerLink');
+    const explorePagesBtn = document.getElementById('explorePagesBtn');
+
+    openProfileBtn.addEventListener('click', () => {
+      profileModalOverlay.classList.add('active');
+    });
+
+    userIconBtn.addEventListener('click', () => {
+      profileModalOverlay.classList.add('active');
+    });
+
+    closeProfileModalBtn.addEventListener('click', () => {
+      profileModalOverlay.classList.remove('active');
+    });
+
+    profileModalOverlay.addEventListener('click', (e) => {
+      if (e.target === profileModalOverlay) {
+        profileModalOverlay.classList.remove('active');
+      }
+    });
+
+    viewProfileInnerLink.addEventListener('click', () => {
+      showToast('@yuno (Curator & Author)');
+    });
+
+    explorePagesBtn.addEventListener('click', () => {
+      showToast('Explore community startpages');
+    });
+
+    const authFullscreen = document.getElementById('authFullscreen');
+    const closeAuthBtn = document.getElementById('closeAuthBtn');
+    const authSignInToggle = document.getElementById('authSignInToggle');
+    const authMainTitle = document.getElementById('authMainTitle');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const cfSpinner = document.getElementById('cfSpinner');
+    const cfSuccessIcon = document.getElementById('cfSuccessIcon');
+    const cfText = document.getElementById('cfText');
+
+    let cfTimer = null;
+
+    function triggerCloudflareScan() {
+      cfSpinner.style.display = 'block';
+      cfSuccessIcon.style.display = 'none';
+      cfText.textContent = 'Verifying you are human...';
+      cfText.classList.remove('success-text');
+
+      if (cfTimer) clearTimeout(cfTimer);
+
+      cfTimer = setTimeout(() => {
+        cfSpinner.style.display = 'none';
+        cfSuccessIcon.style.display = 'flex';
+        cfText.textContent = 'Success!';
+        cfText.classList.add('success-text');
+      }, 1600);
+    }
+
+    openAuthPageBtn.addEventListener('click', () => {
+      profileModalOverlay.classList.remove('active');
+      authFullscreen.classList.add('active');
+      triggerCloudflareScan();
+    });
+
+    closeAuthBtn.addEventListener('click', () => {
+      authFullscreen.classList.remove('active');
+    });
+
+    let isSignInMode = false;
+    authSignInToggle.addEventListener('click', () => {
+      isSignInMode = !isSignInMode;
+      if (isSignInMode) {
+        authMainTitle.textContent = 'Sign in to Hireme';
+        authSubmitBtn.textContent = 'Sign in';
+        authSignInToggle.textContent = 'Create account';
+      } else {
+        authMainTitle.textContent = 'Create an account';
+        authSubmitBtn.textContent = 'Sign up';
+        authSignInToggle.textContent = 'Sign in';
+      }
+      triggerCloudflareScan();
+    });
+
+    authSubmitBtn.addEventListener('click', () => {
+      const emailInput = document.getElementById('authEmailInput').value.trim();
+      if (!emailInput) {
+        showToast('Please enter an email address');
+        return;
+      }
+      showToast('Verification email sent to ' + emailInput);
+    });
+  </script>
+</body>
